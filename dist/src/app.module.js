@@ -20,12 +20,28 @@ const category_module_1 = require("./category/category.module");
 const order_module_1 = require("./order/order.module");
 const statistic_module_1 = require("./statistic/statistic.module");
 const pagination_module_1 = require("./pagination/pagination.module");
+const serve_static_1 = require("@nestjs/serve-static");
+const app_root_path_1 = require("app-root-path");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule.forRoot(), auth_module_1.AuthModule, user_module_1.UserModule, product_module_1.ProductModule, review_module_1.ReviewModule, category_module_1.CategoryModule, order_module_1.OrderModule, statistic_module_1.StatisticModule, pagination_module_1.PaginationModule],
+        imports: [
+            serve_static_1.ServeStaticModule.forRoot({
+                rootPath: `${app_root_path_1.path}/uploads`,
+                serveRoot: '/uploads'
+            }),
+            config_1.ConfigModule.forRoot(),
+            auth_module_1.AuthModule,
+            user_module_1.UserModule,
+            product_module_1.ProductModule,
+            review_module_1.ReviewModule,
+            category_module_1.CategoryModule,
+            order_module_1.OrderModule,
+            statistic_module_1.StatisticModule,
+            pagination_module_1.PaginationModule
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, prisma_service_1.PrismaService]
     })

@@ -16,13 +16,15 @@ const return_product_object_1 = require("./return-product-object");
 const generate_slug_1 = require("../utils/generate-slug");
 const get_all_product_dto_1 = require("./get-all.product.dto");
 const pagination_service_1 = require("../pagination/pagination.service");
+const category_service_1 = require("../category/category.service");
 let ProductService = class ProductService {
-    constructor(prisma, paginationService) {
+    constructor(prisma, paginationService, categoryService) {
         this.prisma = prisma;
         this.paginationService = paginationService;
+        this.categoryService = categoryService;
     }
     async getAll(dto = {}) {
-        const { sort, serchTerm } = dto;
+        const { sort, searchTerm } = dto;
         const prismaSort = [];
         if (sort === get_all_product_dto_1.EnamProductSort.HIGH_PRICE) {
             prismaSort.push({ price: 'desc' });
@@ -36,26 +38,26 @@ let ProductService = class ProductService {
         else {
             prismaSort.push({ createdAt: 'desc' });
         }
-        const prismaSearchTermFilter = serchTerm
+        const prismaSearchTermFilter = searchTerm
             ? {
                 OR: [
                     {
                         category: {
                             name: {
-                                contains: serchTerm,
+                                contains: searchTerm,
                                 mode: 'insensitive'
                             }
                         }
                     },
                     {
                         name: {
-                            contains: serchTerm,
+                            contains: searchTerm,
                             mode: 'insensitive'
                         }
                     },
                     {
                         description: {
-                            contains: serchTerm,
+                            contains: searchTerm,
                             mode: 'insensitive'
                         }
                     }
@@ -75,6 +77,78 @@ let ProductService = class ProductService {
             length: await this.prisma.product.count({
                 where: prismaSearchTermFilter
             })
+        };
+    }
+    getSortOptional(sort) {
+        switch (sort) {
+            case EnumProductSort.HIGHT_PRICE:
+                return { price: 'desc' };
+            case EnumProductSort.LOW_PRICE:
+                return { price: 'asc' };
+            case EnumProductSort.NEWEST:
+                return { createdAt: 'desc' };
+            default:
+                return { createdAt: 'asc' };
+        }
+    }
+    getSearchTermsFilter(searchTerm) {
+        return {
+            OR: [
+                {
+                    category: {
+                        name: {
+                            contains: searchTerm,
+                            mode: 'insensitive'
+                        }
+                    }
+                },
+                {
+                    name: {
+                        contains: searchTerm,
+                        mode: 'insensitive'
+                    }
+                },
+                {
+                    description: {
+                        contains: searchTerm,
+                        mode: 'insensitive'
+                    }
+                }
+            ]
+        };
+    }
+    getRatingfilter(ratings) {
+        return {
+            reviews: {
+                some: {
+                    rating: {
+                        in: ratings
+                    }
+                }
+            }
+        };
+    }
+    getPriceFilter(minPrice, maxPrice) {
+        let priceFilter = undefined;
+        if (minPrice) {
+            priceFilter = {
+                ...priceFilter,
+                gte: minPrice
+            };
+        }
+        if (maxPrice) {
+            priceFilter = {
+                ...priceFilter,
+                lte: maxPrice
+            };
+        }
+        return {
+            price: priceFilter
+        };
+    }
+    categotyFilter(categoryId) {
+        return {
+            categoryId
         };
     }
     async byId(id) {
@@ -179,6 +253,7 @@ exports.ProductService = ProductService;
 exports.ProductService = ProductService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        pagination_service_1.PaginationService])
+        pagination_service_1.PaginationService,
+        category_service_1.CategoryService])
 ], ProductService);
 //# sourceMappingURL=product.service.js.map

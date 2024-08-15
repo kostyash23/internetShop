@@ -19,6 +19,14 @@ let StatisticService = class StatisticService {
         this.userService = userService;
     }
     async getMain(userId) {
+        const orderCount = await this.prisma.order.count();
+        const userCount = await this.prisma.user.count();
+        const reviewCount = await this.prisma.review.count();
+        const total = this.prisma.order.aggregate({
+            _sum: {
+                total: true
+            }
+        });
         const user = await this.userService.byId(userId, {
             orders: {
                 select: {
@@ -30,19 +38,19 @@ let StatisticService = class StatisticService {
         return [
             {
                 name: 'Orders',
-                value: user.orders.length
+                value: orderCount
             },
             {
                 name: 'Review',
-                value: user.reviews.length
+                value: userCount
             },
             {
                 name: 'Favorites',
-                value: user.favorites.length
+                value: reviewCount
             },
             {
                 name: 'Orders',
-                value: user.orders.length
+                value: total
             }
         ];
     }

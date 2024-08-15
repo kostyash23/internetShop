@@ -18,6 +18,7 @@ export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @UsePipes(new ValidationPipe())
+  @Auth('admin')
   @Get()
   async getAll() {
     return this.reviewService.getAllreviews()

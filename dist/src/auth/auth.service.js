@@ -15,10 +15,12 @@ const prisma_service_1 = require("../prisma.service");
 const faker_1 = require("@faker-js/faker");
 const argon2_1 = require("argon2");
 const jwt_1 = require("@nestjs/jwt");
+const user_service_1 = require("../user/user.service");
 let AuthService = class AuthService {
-    constructor(prisma, jwt) {
+    constructor(prisma, jwt, userService) {
         this.prisma = prisma;
         this.jwt = jwt;
+        this.userService = userService;
     }
     async login(dto) {
         const user = await this.validateUser(dto);
@@ -32,10 +34,8 @@ let AuthService = class AuthService {
         const result = await this.jwt.verifyAsync(dto.refreshToken);
         if (!result)
             throw new common_1.UnauthorizedException('invalid refrosh token');
-        const user = await this.prisma.user.findUnique({
-            where: {
-                id: result.id
-            }
+        const user = await this.userService.byId(result.id, {
+            isAdmin: true
         });
         const tokens = await this.issuesToken(user.id);
         return {
@@ -54,7 +54,7 @@ let AuthService = class AuthService {
         const user = await this.prisma.user.create({
             data: {
                 email: dto.email,
-                name: faker_1.faker.name.firstName(),
+                name: faker_1.faker.person.firstName(),
                 avatarPath: faker_1.faker.image.avatar(),
                 phone: faker_1.faker.phone.number('+380 ## ### ## ##'),
                 password: await (0, argon2_1.hash)(dto.password)
@@ -79,7 +79,8 @@ let AuthService = class AuthService {
     returnUserFilds(user) {
         return {
             id: user.id,
-            email: user.email
+            email: user.email,
+            isAdmin: user.isAdmin
         };
     }
     async validateUser(dto) {
@@ -100,6 +101,7 @@ exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        jwt_1.JwtService])
+        jwt_1.JwtService,
+        user_service_1.UserService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

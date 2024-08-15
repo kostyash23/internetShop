@@ -4,8 +4,15 @@ export declare class StatisticService {
     private prisma;
     private userService;
     constructor(prisma: PrismaService, userService: UserService);
-    getMain(userId: number): Promise<{
+    getMain(userId: number): Promise<({
         name: string;
         value: number;
-    }[]>;
+    } | {
+        name: string;
+        value: import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.GetOrderAggregateType<{
+            _sum: {
+                total: true;
+            };
+        }>>;
+    })[]>;
 }

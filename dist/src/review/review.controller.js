@@ -35,6 +35,7 @@ let ReviewController = class ReviewController {
 exports.ReviewController = ReviewController;
 __decorate([
     (0, common_1.UsePipes)(new common_1.ValidationPipe()),
+    (0, auth_decorator_1.Auth)('admin'),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

@@ -7,5 +7,9 @@ export declare enum EnamProductSort {
 }
 export declare class GetAllproductDto extends PaginationDto {
     sort?: EnamProductSort;
-    serchTerm?: string;
+    searchTerm?: string;
+    rating?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    categoryId?: string;
 }

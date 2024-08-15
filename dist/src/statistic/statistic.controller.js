@@ -28,7 +28,7 @@ let StatisticController = class StatisticController {
 exports.StatisticController = StatisticController;
 __decorate([
     (0, common_1.Get)('main'),
-    (0, auth_decorator_1.Auth)(),
+    (0, auth_decorator_1.Auth)('admin'),
     __param(0, (0, user_decorator_1.CurrentUser)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

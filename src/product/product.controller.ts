@@ -49,20 +49,20 @@ export class ProductController {
   }
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
-  @Auth()
+  @Auth('admin')
   @Put(':id')
   async updateProduct(@Param('id') id: string, @Body() dto: ProductDto) {
     return this.productService.update(+id, dto)
   }
 
   @HttpCode(200)
-  @Auth()
+  @Auth('admin')
   @Delete(':id')
   async deleteProduct(@Param('id') id: string) {
     return this.productService.delete(+id)
   }
 
-  @Auth()
+  @Auth('admin')
   @Get(':id')
   async getProduct(@Param('id') id: string) {
     return this.productService.byId(+id)

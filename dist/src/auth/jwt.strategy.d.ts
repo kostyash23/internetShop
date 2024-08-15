@@ -13,6 +13,7 @@ export declare class JwtStrategy extends JwtStrategy_base {
         updateAt: Date;
         email: string;
         password: string;
+        isAdmin: boolean;
         name: string;
         avatarPath: string;
         phone: string;

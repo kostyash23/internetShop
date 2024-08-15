@@ -2,16 +2,24 @@ import { PrismaService } from 'src/prisma.service';
 import { ProductDto } from './productDto';
 import { GetAllproductDto } from './get-all.product.dto';
 import { PaginationService } from 'src/pagination/pagination.service';
+import { CategoryService } from 'src/category/category.service';
+export declare enum EnumProductSort {
+    HIGHT_PRICE = "high_price",
+    LOW_PRICE = "low_price",
+    NEWEST = "newest",
+    OLDEST = "oldest"
+}
 export declare class ProductService {
     private prisma;
     private paginationService;
-    constructor(prisma: PrismaService, paginationService: PaginationService);
+    private categoryService;
+    constructor(prisma: PrismaService, paginationService: PaginationService, categoryService: CategoryService);
     getAll(dto?: GetAllproductDto): Promise<{
         products: {
+            name: string;
             id: number;
             createdAt: Date;
             updateAt: Date;
-            name: string;
             slug: string;
             description: string;
             price: number;
@@ -50,6 +58,7 @@ export declare class ProductService {
                 updateAt: Date;
                 email: string;
                 password: string;
+                isAdmin: boolean;
                 name: string;
                 avatarPath: string;
                 phone: string;
@@ -63,11 +72,16 @@ export declare class ProductService {
         }[];
         length: number;
     }>;
+    private getSortOptional;
+    private getSearchTermsFilter;
+    private getRatingfilter;
+    private getPriceFilter;
+    private categotyFilter;
     byId(id: number): Promise<{
+        name: string;
         id: number;
         createdAt: Date;
         updateAt: Date;
-        name: string;
         slug: string;
         description: string;
         price: number;
@@ -106,6 +120,7 @@ export declare class ProductService {
             updateAt: Date;
             email: string;
             password: string;
+            isAdmin: boolean;
             name: string;
             avatarPath: string;
             phone: string;
@@ -118,10 +133,10 @@ export declare class ProductService {
         };
     }>;
     bySlyg(slug: string): Promise<{
+        name: string;
         id: number;
         createdAt: Date;
         updateAt: Date;
-        name: string;
         slug: string;
         description: string;
         price: number;
@@ -160,6 +175,7 @@ export declare class ProductService {
             updateAt: Date;
             email: string;
             password: string;
+            isAdmin: boolean;
             name: string;
             avatarPath: string;
             phone: string;
@@ -172,10 +188,10 @@ export declare class ProductService {
         };
     }>;
     byCategory(categorySlug: string): Promise<{
+        name: string;
         id: number;
         createdAt: Date;
         updateAt: Date;
-        name: string;
         slug: string;
         description: string;
         price: number;
@@ -214,6 +230,7 @@ export declare class ProductService {
             updateAt: Date;
             email: string;
             password: string;
+            isAdmin: boolean;
             name: string;
             avatarPath: string;
             phone: string;
@@ -226,10 +243,10 @@ export declare class ProductService {
         };
     }[]>;
     getSimilar(id: number): Promise<{
+        name: string;
         id: number;
         createdAt: Date;
         updateAt: Date;
-        name: string;
         slug: string;
         description: string;
         price: number;
@@ -268,6 +285,7 @@ export declare class ProductService {
             updateAt: Date;
             email: string;
             password: string;
+            isAdmin: boolean;
             name: string;
             avatarPath: string;
             phone: string;

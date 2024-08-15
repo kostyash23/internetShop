@@ -1,8 +1,10 @@
 import { PrismaService } from 'src/prisma.service';
 import { ReviewDto } from './reviewDto';
+import { ProductService } from 'src/product/product.service';
 export declare class ReviewService {
     private prisma;
-    constructor(prisma: PrismaService);
+    private productService;
+    constructor(prisma: PrismaService, productService: ProductService);
     getAllreviews(): Promise<{
         product: {
             id: number;
@@ -26,6 +28,7 @@ export declare class ReviewService {
             updateAt: Date;
             email: string;
             password: string;
+            isAdmin: boolean;
             name: string;
             avatarPath: string;
             phone: string;
@@ -37,6 +40,7 @@ export declare class ReviewService {
             createdAt: Date;
             updateAt: Date;
             status: import(".prisma/client").$Enums.EnumOrderStatus;
+            total: number;
             userId: number;
         };
         orderId: number;

@@ -9,16 +9,25 @@ import { generateSlug } from 'src/utils/generate-slug'
 import { EnamProductSort, GetAllproductDto } from './get-all.product.dto'
 import { Prisma } from '@prisma/client'
 import { PaginationService } from 'src/pagination/pagination.service'
+import { CategoryService } from 'src/category/category.service'
+
+export declare enum EnumProductSort {
+  HIGHT_PRICE = 'high_price',
+  LOW_PRICE = 'low_price',
+  NEWEST = 'newest',
+  OLDEST = 'oldest'
+}
 
 @Injectable()
 export class ProductService {
   constructor(
     private prisma: PrismaService,
-    private paginationService: PaginationService
+    private paginationService: PaginationService,
+    private categoryService: CategoryService
   ) {}
 
   async getAll(dto: GetAllproductDto = {}) {
-    const { sort, serchTerm } = dto
+    const { sort, searchTerm } = dto
 
     const prismaSort: Prisma.ProductOrderByWithRelationInput[] = []
 
@@ -32,26 +41,26 @@ export class ProductService {
       prismaSort.push({ createdAt: 'desc' })
     }
 
-    const prismaSearchTermFilter: Prisma.ProductWhereInput = serchTerm
+    const prismaSearchTermFilter: Prisma.ProductWhereInput = searchTerm
       ? {
           OR: [
             {
               category: {
                 name: {
-                  contains: serchTerm,
+                  contains: searchTerm,
                   mode: 'insensitive'
                 }
               }
             },
             {
               name: {
-                contains: serchTerm,
+                contains: searchTerm,
                 mode: 'insensitive'
               }
             },
             {
               description: {
-                contains: serchTerm,
+                contains: searchTerm,
                 mode: 'insensitive'
               }
             }
@@ -73,6 +82,88 @@ export class ProductService {
       length: await this.prisma.product.count({
         where: prismaSearchTermFilter
       })
+    }
+  }
+  private getSortOptional(
+    sort: EnumProductSort
+  ): Prisma.ProductOrderByWithRelationInput {
+    switch (sort) {
+      case EnumProductSort.HIGHT_PRICE:
+        return { price: 'desc' }
+      case EnumProductSort.LOW_PRICE:
+        return { price: 'asc' }
+      case EnumProductSort.NEWEST:
+        return { createdAt: 'desc' } // Сортування нових продуктів за спаданням дати створення
+      default:
+        return { createdAt: 'asc' } // За замовчуванням сортування за зростанням дати створення
+    }
+  }
+
+  private getSearchTermsFilter(searchTerm: string): Prisma.ProductWhereInput {
+    return {
+      OR: [
+        {
+          category: {
+            name: {
+              contains: searchTerm,
+              mode: 'insensitive'
+            }
+          }
+        },
+        {
+          name: {
+            contains: searchTerm,
+            mode: 'insensitive'
+          }
+        },
+        {
+          description: {
+            contains: searchTerm,
+            mode: 'insensitive'
+          }
+        }
+      ]
+    }
+  }
+  private getRatingfilter(ratings: number[]): Prisma.ProductWhereInput {
+    return {
+      reviews: {
+        some: {
+          rating: {
+            in: ratings
+          }
+        }
+      }
+    }
+  }
+
+  private getPriceFilter(
+    minPrice?: number,
+    maxPrice?: number
+  ): Prisma.ProductWhereInput {
+    let priceFilter: Prisma.IntFilter | undefined = undefined
+
+    if (minPrice) {
+      priceFilter = {
+        ...priceFilter,
+        gte: minPrice
+      }
+    }
+    if (maxPrice) {
+      priceFilter = {
+        ...priceFilter,
+        lte: maxPrice
+      }
+    }
+
+    return {
+      price: priceFilter
+    }
+  }
+
+  private categotyFilter(categoryId: number): Prisma.ProductWhereInput {
+    return {
+      categoryId
     }
   }
 

@@ -63,7 +63,7 @@ __decorate([
 ], CategoryController.prototype, "getById", null);
 __decorate([
     (0, common_1.HttpCode)(200),
-    (0, auth_decorator_1.Auth)(),
+    (0, auth_decorator_1.Auth)('admin'),
     (0, common_1.Post)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -72,7 +72,7 @@ __decorate([
 __decorate([
     (0, common_1.UsePipes)(new common_1.ValidationPipe()),
     (0, common_1.HttpCode)(200),
-    (0, auth_decorator_1.Auth)(),
+    (0, auth_decorator_1.Auth)('admin'),
     (0, common_1.Put)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -83,7 +83,7 @@ __decorate([
 __decorate([
     (0, common_1.UsePipes)(new common_1.ValidationPipe()),
     (0, common_1.HttpCode)(200),
-    (0, auth_decorator_1.Auth)(),
+    (0, auth_decorator_1.Auth)('admin'),
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),

@@ -10,6 +10,7 @@ export declare class AuthController {
         user: {
             id: number;
             email: string;
+            isAdmin: boolean;
         };
     }>;
     getNewToken(dto: RefreshTokenDto): Promise<{
@@ -18,6 +19,7 @@ export declare class AuthController {
         user: {
             id: number;
             email: string;
+            isAdmin: boolean;
         };
     }>;
     register(dto: AuthDto): Promise<{
@@ -26,6 +28,7 @@ export declare class AuthController {
         user: {
             id: number;
             email: string;
+            isAdmin: boolean;
         };
     }>;
 }

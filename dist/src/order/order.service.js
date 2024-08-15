@@ -12,19 +12,65 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma.service");
+const return_product_object_1 = require("../product/return-product-object");
 let OrderService = class OrderService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    getAll(userId) {
+    async getAll() {
+        return this.prisma.order.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            },
+            include: {
+                items: {
+                    include: {
+                        product: {
+                            select: return_product_object_1.productReturnObject
+                        }
+                    }
+                }
+            }
+        });
+    }
+    async getByUserId(userId) {
         return this.prisma.order.findMany({
             where: {
                 userId
             },
             orderBy: {
                 createdAt: 'desc'
+            },
+            include: {
+                items: {
+                    include: {
+                        product: {
+                            select: return_product_object_1.productReturnObject
+                        }
+                    }
+                }
             }
         });
+    }
+    async pleaceOrder(dto, userId) {
+        const total = dto.items.reduce((acc, item) => {
+            return acc + item.price * item.quantity;
+        }, 0);
+        const order = await this.prisma.order.create({
+            data: {
+                status: dto.status,
+                items: {
+                    create: dto.items
+                },
+                total,
+                user: {
+                    connect: {
+                        id: userId
+                    }
+                }
+            }
+        });
+        return order;
     }
 };
 exports.OrderService = OrderService;

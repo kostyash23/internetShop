@@ -11,13 +11,19 @@ const common_1 = require("@nestjs/common");
 const review_service_1 = require("./review.service");
 const review_controller_1 = require("./review.controller");
 const prisma_service_1 = require("../prisma.service");
+const product_service_1 = require("../product/product.service");
+const product_module_1 = require("../product/product.module");
+const pagination_module_1 = require("../pagination/pagination.module");
+const category_module_1 = require("../category/category.module");
+const category_service_1 = require("../category/category.service");
 let ReviewModule = class ReviewModule {
 };
 exports.ReviewModule = ReviewModule;
 exports.ReviewModule = ReviewModule = __decorate([
     (0, common_1.Module)({
         controllers: [review_controller_1.ReviewController],
-        providers: [review_service_1.ReviewService, prisma_service_1.PrismaService]
+        providers: [review_service_1.ReviewService, prisma_service_1.PrismaService, product_service_1.ProductService, category_service_1.CategoryService],
+        imports: [product_module_1.ProductModule, pagination_module_1.PaginationModule, category_module_1.CategoryModule]
     })
 ], ReviewModule);
 //# sourceMappingURL=review.module.js.map

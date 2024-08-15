@@ -26,6 +26,7 @@ export declare class ReviewController {
             updateAt: Date;
             email: string;
             password: string;
+            isAdmin: boolean;
             name: string;
             avatarPath: string;
             phone: string;
@@ -37,6 +38,7 @@ export declare class ReviewController {
             createdAt: Date;
             updateAt: Date;
             status: import(".prisma/client").$Enums.EnumOrderStatus;
+            total: number;
             userId: number;
         };
         orderId: number;

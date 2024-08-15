@@ -17,6 +17,9 @@ exports.productReturnObject = {
     reviews: {
         select: {
             ...returtn_review_object_1.returnReviewObject
+        },
+        orderBy: {
+            createdAt: 'desc'
         }
     }
 };

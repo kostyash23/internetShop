@@ -6,10 +6,10 @@ export declare class ProductController {
     constructor(productService: ProductService);
     getAll(queryDto: GetAllproductDto): Promise<{
         products: {
+            name: string;
             id: number;
             createdAt: Date;
             updateAt: Date;
-            name: string;
             slug: string;
             description: string;
             price: number;
@@ -48,6 +48,7 @@ export declare class ProductController {
                 updateAt: Date;
                 email: string;
                 password: string;
+                isAdmin: boolean;
                 name: string;
                 avatarPath: string;
                 phone: string;
@@ -62,10 +63,10 @@ export declare class ProductController {
         length: number;
     }>;
     getSimilar(id: string): Promise<{
+        name: string;
         id: number;
         createdAt: Date;
         updateAt: Date;
-        name: string;
         slug: string;
         description: string;
         price: number;
@@ -104,6 +105,7 @@ export declare class ProductController {
             updateAt: Date;
             email: string;
             password: string;
+            isAdmin: boolean;
             name: string;
             avatarPath: string;
             phone: string;
@@ -116,10 +118,10 @@ export declare class ProductController {
         };
     }[]>;
     getBySlug(slug: string): Promise<{
+        name: string;
         id: number;
         createdAt: Date;
         updateAt: Date;
-        name: string;
         slug: string;
         description: string;
         price: number;
@@ -158,6 +160,7 @@ export declare class ProductController {
             updateAt: Date;
             email: string;
             password: string;
+            isAdmin: boolean;
             name: string;
             avatarPath: string;
             phone: string;
@@ -170,10 +173,10 @@ export declare class ProductController {
         };
     }>;
     getByCategoryg(category: string): Promise<{
+        name: string;
         id: number;
         createdAt: Date;
         updateAt: Date;
-        name: string;
         slug: string;
         description: string;
         price: number;
@@ -212,6 +215,7 @@ export declare class ProductController {
             updateAt: Date;
             email: string;
             password: string;
+            isAdmin: boolean;
             name: string;
             avatarPath: string;
             phone: string;
@@ -249,10 +253,10 @@ export declare class ProductController {
         userId: number | null;
     }>;
     getProduct(id: string): Promise<{
+        name: string;
         id: number;
         createdAt: Date;
         updateAt: Date;
-        name: string;
         slug: string;
         description: string;
         price: number;
@@ -291,6 +295,7 @@ export declare class ProductController {
             updateAt: Date;
             email: string;
             password: string;
+            isAdmin: boolean;
             name: string;
             avatarPath: string;
             phone: string;

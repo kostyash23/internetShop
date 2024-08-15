@@ -13,9 +13,11 @@ exports.ReviewService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma.service");
 const returtn_review_object_1 = require("./returtn-review.object");
+const product_service_1 = require("../product/product.service");
 let ReviewService = class ReviewService {
-    constructor(prisma) {
+    constructor(prisma, productService) {
         this.prisma = prisma;
+        this.productService = productService;
     }
     async getAllreviews() {
         return this.prisma.review.findMany({
@@ -28,6 +30,7 @@ let ReviewService = class ReviewService {
         });
     }
     async create(userId, dto, productId) {
+        await this.productService.byId(productId);
         return this.prisma.review.create({
             data: {
                 ...dto,
@@ -58,6 +61,7 @@ let ReviewService = class ReviewService {
 exports.ReviewService = ReviewService;
 exports.ReviewService = ReviewService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        product_service_1.ProductService])
 ], ReviewService);
 //# sourceMappingURL=review.service.js.map

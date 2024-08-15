@@ -25,6 +25,7 @@ export declare class UserController {
         };
         email: string;
         password: string;
+        isAdmin: boolean;
         avatarPath: string;
         phone: string;
         orders: {
@@ -32,6 +33,7 @@ export declare class UserController {
             createdAt: Date;
             updateAt: Date;
             status: import(".prisma/client").$Enums.EnumOrderStatus;
+            total: number;
             userId: number;
         }[];
         favorites: {
@@ -53,6 +55,7 @@ export declare class UserController {
         updateAt: Date;
         email: string;
         password: string;
+        isAdmin: boolean;
         name: string;
         avatarPath: string;
         phone: string;
@@ -63,6 +66,7 @@ export declare class UserController {
         updateAt: Date;
         email: string;
         password: string;
+        isAdmin: boolean;
         name: string;
         avatarPath: string;
         phone: string;
